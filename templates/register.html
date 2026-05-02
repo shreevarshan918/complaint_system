@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>CampusVoice — Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ink: #0f1117;
+            --ink2: #4a5166;
+            --ink3: #8b91a6;
+            --surface: #fff;
+            --bg: #f4f5f9;
+            --accent: #2563eb;
+            --accent-dark: #1d4ed8;
+            --border: #e2e5ed;
+            --radius: 12px;
+            --danger: #dc2626;
+            --success: #16a34a;
+        }
+
+        body {
+            font-family: 'DM Sans',sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 32px rgba(0,0,0,.08);
+            width: 100%;
+            max-width: 540px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg,#1e3a8a,#2563eb);
+            padding: 32px 36px;
+            color: #fff;
+        }
+
+            .card-header a {
+                color: rgba(255,255,255,.7);
+                text-decoration: none;
+                font-size: 13px;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                margin-bottom: 16px;
+            }
+
+                .card-header a:hover {
+                    color: #fff;
+                }
+
+            .card-header h1 {
+                font-family: 'DM Serif Display',serif;
+                font-size: 26px;
+                letter-spacing: -.3px;
+            }
+
+            .card-header p {
+                font-size: 14px;
+                opacity: .75;
+                margin-top: 4px;
+            }
+
+        .progress {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-top: 24px;
+        }
+
+        .prog-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prog-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,.6);
+            transition: all .3s;
+        }
+
+            .prog-dot.active {
+                background: #fff;
+                border-color: #fff;
+                color: var(--accent);
+            }
+
+            .prog-dot.done {
+                background: rgba(255,255,255,.2);
+                border-color: rgba(255,255,255,.6);
+                color: #fff;
+            }
+
+        .prog-label {
+            font-size: 12px;
+            color: rgba(255,255,255,.7);
+        }
+
+            .prog-label.active {
+                color: #fff;
+                font-weight: 600;
+            }
+
+        .prog-line {
+            width: 40px;
+            height: 1px;
+            background: rgba(255,255,255,.25);
+            margin: 0 8px;
+        }
+
+        .card-body {
+            padding: 36px;
+        }
+
+        .step-page {
+            display: none;
+        }
+
+            .step-page.active {
+                display: block;
+                animation: fadeSlide .3s ease;
+            }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateX(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+            .field-group label {
+                display: block;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--ink2);
+                margin-bottom: 7px;
+                text-transform: uppercase;
+                letter-spacing: .5px;
+            }
+
+            .field-group input, .field-group select {
+                width: 100%;
+                padding: 12px 14px;
+                border: 1.5px solid var(--border);
+                border-radius: var(--radius);
+                font-size: 14px;
+                color: var(--ink);
+                font-family: 'DM Sans',sans-serif;
+                outline: none;
+                transition: border-color .2s;
+                background: #fff;
+            }
+
+                .field-group input:focus, .field-group select:focus {
+                    border-color: var(--accent);
+                }
+
+                .field-group input::placeholder {
+                    color: var(--ink3);
+                }
+
+        select option {
+            background: #fff;
+        }
+
+        .strength-wrap {
+            margin-top: 8px;
+        }
+
+        .strength-bars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 5px;
+        }
+
+        .sbar {
+            flex: 1;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--border);
+            transition: all .3s;
+        }
+
+        .strength-label {
+            font-size: 11px;
+            color: var(--ink3);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 13px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'DM Sans',sans-serif;
+        }
+
+            .btn-primary:hover {
+                background: var(--accent-dark);
+            }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 13px;
+            background: #fff;
+            color: var(--ink2);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'DM Sans',sans-serif;
+        }
+
+            .btn-secondary:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+
+        .alert-box {
+            padding: 12px 14px;
+            border-radius: 9px;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+            .alert-box.error {
+                background: #fef2f2;
+                border: 1px solid #fecaca;
+                color: var(--danger);
+                display: none;
+            }
+
+            .alert-box.success {
+                background: #f0fdf4;
+                border: 1px solid #bbf7d0;
+                color: var(--success);
+                display: none;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .alert-box.show {
+                display: block;
+            }
+
+            .alert-box.success a {
+                color: var(--accent);
+                font-weight: 600;
+            }
+
+        .footer-text {
+            text-align: center;
+            font-size: 13px;
+            color: var(--ink3);
+            margin-top: 20px;
+        }
+
+            .footer-text a {
+                color: var(--accent);
+                text-decoration: none;
+                font-weight: 600;
+            }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <a href="login.html">← Back to sign in</a>
+            <h1>Create your account</h1>
+            <p>Join CampusVoice to file and track complaints</p>
+            <div class="progress">
+                <div class="prog-step">
+                    <div class="prog-dot active" id="dot1">1</div>
+                    <span class="prog-label active" id="lbl1">Personal info</span>
+                </div>
+                <div class="prog-line"></div>
+                <div class="prog-step">
+                    <div class="prog-dot" id="dot2">2</div>
+                    <span class="prog-label" id="lbl2">Set password</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="alert-box error" id="errBox"></div>
+            <div class="alert-box success" id="sucBox">
+                ✅ Account created successfully!<br><br>
+                <a href="login.html">Sign in to your account →</a>
+            </div>
+
+            <div class="step-page active" id="page1">
+                <div class="row-2">
+                    <div class="field-group"><label>First name</label><input type="text" id="fname" placeholder="First name"></div>
+                    <div class="field-group"><label>Last name</label><input type="text" id="lname" placeholder="Last name"></div>
+                </div>
+                <div class="field-group">
+                    <label>College email</label>
+                    <input type="email" id="email" placeholder="yourname@bgscet.ac.in">
+                    <div style="font-size:11px;color:var(--ink3);margin-top:5px">⚠️ Only @bgscet.ac.in email addresses are accepted</div>
+                </div>
+                <div class="row-2">
+                    <div class="field-group"><label>Phone number</label><input type="text" id="phone" placeholder="10-digit number"></div>
+                    <div class="field-group"><label>Department</label><select id="dept"><option value="">Select dept.</option></select></div>
+                </div>
+                <button class="btn-primary" onclick="nextStep()">Continue →</button>
+                <div class="footer-text">Already have an account? <a href="login.html">Sign in</a></div>
+            </div>
+
+            <div class="step-page" id="page2">
+                <div class="field-group">
+                    <label>Create password</label>
+                    <input type="password" id="password" placeholder="Minimum 8 characters" oninput="checkStrength(this.value)">
+                    <div class="strength-wrap">
+                        <div class="strength-bars"><div class="sbar" id="s1"></div><div class="sbar" id="s2"></div><div class="sbar" id="s3"></div><div class="sbar" id="s4"></div></div>
+                        <div class="strength-label" id="sLabel">Enter a password</div>
+                    </div>
+                </div>
+                <div class="field-group"><label>Confirm password</label><input type="password" id="confirm" placeholder="Re-enter password"></div>
+                <div class="btn-row">
+                    <button class="btn-secondary" onclick="prevStep()">← Back</button>
+                    <button class="btn-primary" onclick="register()">Create account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const API = 'http://127.0.0.1:8000';
+        async function loadDepts() {
+            const r = await fetch(API + '/departments');
+            const d = await r.json();
+            const s = document.getElementById('dept');
+            d.forEach(x => s.innerHTML += `<option value="${x.department_id}">${x.dept_name}</option>`);
+        }
+        loadDepts();
+        function showErr(m) { const e = document.getElementById('errBox'); e.textContent = '⚠️ ' + m; e.classList.add('show'); }
+        function clearErr() { document.getElementById('errBox').classList.remove('show'); }
+        function nextStep() {
+            clearErr();
+            const fn = document.getElementById('fname').value.trim();
+            const ln = document.getElementById('lname').value.trim();
+            const em = document.getElementById('email').value.trim();
+            const dp = document.getElementById('dept').value;
+            if (!fn || !ln) { showErr('Please enter your full name.'); return; }
+            if (!em || !em.includes('@')) { showErr('Please enter a valid email.'); return; }
+            if (!em.endsWith('@bgscet.ac.in')) { showErr('Only @bgscet.ac.in email addresses are allowed.'); return; }            if (!dp) { showErr('Please select your department.'); return; }
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.add('active');
+            document.getElementById('dot1').classList.replace('active', 'done'); document.getElementById('dot1').textContent = '✓';
+            document.getElementById('lbl1').classList.remove('active');
+            document.getElementById('dot2').classList.add('active'); document.getElementById('lbl2').classList.add('active');
+        }
+        function prevStep() {
+            document.getElementById('page2').classList.remove('active');
+            document.getElementById('page1').classList.add('active');
+            document.getElementById('dot2').classList.remove('active'); document.getElementById('lbl2').classList.remove('active');
+            document.getElementById('dot1').classList.replace('done', 'active'); document.getElementById('dot1').textContent = '1';
+            document.getElementById('lbl1').classList.add('active');
+        }
+        function checkStrength(v) {
+            const bars = ['s1', 's2', 's3', 's4'];
+            const cols = ['#ef4444', '#f97316', '#eab308', '#16a34a'];
+            const lbls = ['Weak', 'Fair', 'Good', 'Strong'];
+            let s = 0;
+            if (v.length >= 8) s++; if (/[A-Z]/.test(v)) s++; if (/[0-9]/.test(v)) s++; if (/[^A-Za-z0-9]/.test(v)) s++;
+            bars.forEach((id, i) => document.getElementById(id).style.background = i < s ? cols[s - 1] : 'var(--border)');
+            const el = document.getElementById('sLabel');
+            el.textContent = s > 0 ? lbls[s - 1] : 'Enter a password';
+            el.style.color = s > 0 ? cols[s - 1] : 'var(--ink3)';
+        }
+        async function register() {
+            clearErr();
+            const pw = document.getElementById('password').value;
+            const cf = document.getElementById('confirm').value;
+            if (pw.length < 8) { showErr('Password must be at least 8 characters.'); return; }
+            if (pw !== cf) { showErr('Passwords do not match.'); return; }
+            const body = {
+                name: document.getElementById('fname').value.trim() + ' ' + document.getElementById('lname').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                password: pw, phone: document.getElementById('phone').value.trim(),
+                dept_id: parseInt(document.getElementById('dept').value)
+            };
+            try {
+                const res = await fetch(API + '/register/student', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                const data = await res.json();
+                if (!res.ok) { showErr(data.detail || 'Registration failed.'); return; }
+                document.getElementById('page2').style.display = 'none';
+                document.getElementById('sucBox').classList.add('show');
+            } catch { showErr('Cannot connect to server.'); }
+        }
+    </script>
+</body>
+</html>

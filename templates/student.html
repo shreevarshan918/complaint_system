@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>CampusVoice — Student</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ink: #0f1117;
+            --ink2: #4a5166;
+            --ink3: #8b91a6;
+            --bg: #f4f5f9;
+            --surface: #fff;
+            --accent: #2563eb;
+            --border: #e2e5ed;
+            --radius: 12px;
+            --sidebar: 240px;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --warn: #d97706;
+        }
+
+        body {
+            font-family: 'DM Sans',sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar);
+            background: #fff;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sb-brand {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sb-brand-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg,#1e3a8a,#2563eb);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .sb-brand-name {
+            font-family: 'DM Serif Display',serif;
+            font-size: 17px;
+            color: var(--ink);
+        }
+
+        .sb-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .sb-section-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--ink3);
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            padding: 0 8px;
+            margin-bottom: 6px;
+            margin-top: 8px;
+        }
+
+        .sb-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 10px;
+            border-radius: 9px;
+            cursor: pointer;
+            color: var(--ink2);
+            font-size: 13.5px;
+            font-weight: 500;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            transition: all .15s;
+            margin-bottom: 2px;
+        }
+
+            .sb-item:hover {
+                background: var(--bg);
+                color: var(--ink);
+            }
+
+            .sb-item.active {
+                background: #eff6ff;
+                color: var(--accent);
+            }
+
+            .sb-item .si {
+                font-size: 15px;
+                width: 18px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+        .sb-footer {
+            padding: 14px 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .sb-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 9px;
+            background: var(--bg);
+        }
+
+        .sb-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg,#1e3a8a,#2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .sb-uname {
+            font-size: 13px;
+            font-weight: 500;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sb-logout {
+            cursor: pointer;
+            color: var(--ink3);
+            font-size: 13px;
+            transition: color .15s;
+        }
+
+            .sb-logout:hover {
+                color: var(--danger);
+            }
+
+        .main {
+            margin-left: var(--sidebar);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .topbar-sub {
+            font-size: 12px;
+            color: var(--ink3);
+            margin-top: 1px;
+        }
+
+        .content {
+            padding: 28px;
+            flex: 1;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn .25s ease;
+        }
+
+            .section.active {
+                display: block;
+            }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+        }
+
+            .stat-card .sc-label {
+                font-size: 12px;
+                color: var(--ink3);
+                font-weight: 500;
+                margin-bottom: 8px;
+            }
+
+            .stat-card .sc-num {
+                font-size: 26px;
+                font-weight: 600;
+                letter-spacing: -.5px;
+            }
+
+        .sc-num.blue {
+            color: var(--accent);
+        }
+
+        .sc-num.amber {
+            color: var(--warn);
+        }
+
+        .sc-num.green {
+            color: var(--success);
+        }
+
+        .sc-num.red {
+            color: var(--danger);
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ink);
+        }
+
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+            .field-group label {
+                display: block;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--ink2);
+                margin-bottom: 7px;
+                text-transform: uppercase;
+                letter-spacing: .4px;
+            }
+
+            .field-group input, .field-group select, .field-group textarea {
+                width: 100%;
+                padding: 11px 13px;
+                border: 1.5px solid var(--border);
+                border-radius: 10px;
+                font-size: 14px;
+                color: var(--ink);
+                font-family: 'DM Sans',sans-serif;
+                outline: none;
+                transition: border-color .2s;
+                background: #fff;
+            }
+
+                .field-group input:focus, .field-group select:focus, .field-group textarea:focus {
+                    border-color: var(--accent);
+                }
+
+                .field-group input::placeholder, .field-group textarea::placeholder {
+                    color: var(--ink3);
+                }
+
+            .field-group textarea {
+                height: 100px;
+                resize: vertical;
+            }
+
+            .field-group select option {
+                background: #fff;
+            }
+
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s;
+            background: #fafbfc;
+        }
+
+            .upload-zone:hover {
+                border-color: var(--accent);
+                background: #eff6ff;
+            }
+
+            .upload-zone .uz-ico {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+
+            .upload-zone p {
+                font-size: 13px;
+                color: var(--ink3);
+            }
+
+            .upload-zone strong {
+                color: var(--accent);
+            }
+
+        .file-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .file-chip {
+            background: #eff6ff;
+            color: var(--accent);
+            border: 1px solid #bfdbfe;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .btn-submit {
+            padding: 12px 24px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'DM Sans',sans-serif;
+        }
+
+            .btn-submit:hover {
+                background: #1d4ed8;
+            }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 180px;
+            padding: 9px 13px;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-size: 13px;
+            color: var(--ink);
+            font-family: 'DM Sans',sans-serif;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+            .search-input:focus {
+                border-color: var(--accent);
+            }
+
+        .filter-sel {
+            padding: 9px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-size: 13px;
+            color: var(--ink);
+            font-family: 'DM Sans',sans-serif;
+            outline: none;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .complaint-row {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all .15s;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+            .complaint-row:hover {
+                border-color: #93c5fd;
+                box-shadow: 0 2px 12px rgba(37,99,235,.08);
+            }
+
+        .cr-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+            .cr-icon.Canteen {
+                background: #fef3c7;
+            }
+
+            .cr-icon.Hostel {
+                background: #f0fdf4;
+            }
+
+            .cr-icon.Academic {
+                background: #eff6ff;
+            }
+
+            .cr-icon.Infrastructure {
+                background: #fff7ed;
+            }
+
+            .cr-icon.Library {
+                background: #fdf4ff;
+            }
+
+            .cr-icon.Harassment {
+                background: #fef2f2;
+            }
+
+            .cr-icon.Transport {
+                background: #f0f9ff;
+            }
+
+            .cr-icon.Administration {
+                background: #f8fafc;
+            }
+
+        .cr-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cr-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cr-desc {
+            font-size: 12px;
+            color: var(--ink3);
+            margin-bottom: 8px;
+            line-height: 1.4;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .cr-meta {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .cr-date {
+            font-size: 11px;
+            color: var(--ink3);
+            margin-left: auto;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .2px;
+        }
+
+            .badge.Open {
+                background: #fff7ed;
+                color: #92400e;
+                border: 1px solid #fed7aa;
+            }
+
+            .badge.In-Progress {
+                background: #eff6ff;
+                color: #1e40af;
+                border: 1px solid #bfdbfe;
+            }
+
+            .badge.Resolved {
+                background: #f0fdf4;
+                color: #14532d;
+                border: 1px solid #bbf7d0;
+            }
+
+            .badge.Rejected {
+                background: #fef2f2;
+                color: #991b1b;
+                border: 1px solid #fecaca;
+            }
+
+            .badge.High {
+                background: #fef2f2;
+                color: #991b1b;
+            }
+
+            .badge.Medium {
+                background: #fff7ed;
+                color: #92400e;
+            }
+
+            .badge.Low {
+                background: #f0fdf4;
+                color: #14532d;
+            }
+
+            .badge.cat {
+                background: #f5f3ff;
+                color: #5b21b6;
+                border: 1px solid #ddd6fe;
+            }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--ink3);
+        }
+
+            .empty-state .es-ico {
+                font-size: 40px;
+                margin-bottom: 12px;
+                opacity: .5;
+            }
+
+        .modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+            .modal-bg.open {
+                display: flex;
+            }
+
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 560px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        }
+
+        .modal-head {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: #fff;
+        }
+
+            .modal-head h3 {
+                font-size: 15px;
+                font-weight: 600;
+            }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--ink3);
+        }
+
+            .modal-close:hover {
+                color: var(--ink);
+            }
+
+        .modal-body {
+            padding: 20px 24px 24px;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+            .timeline::before {
+                content: '';
+                position: absolute;
+                left: 7px;
+                top: 6px;
+                bottom: 0;
+                width: 1px;
+                background: var(--border);
+            }
+
+        .tl-item {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .tl-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+            margin-top: 2px;
+            position: relative;
+            z-index: 1;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+            .tl-dot.Resolved {
+                background: var(--success);
+                box-shadow: 0 0 0 2px var(--success);
+            }
+
+            .tl-dot.Rejected {
+                background: var(--danger);
+                box-shadow: 0 0 0 2px var(--danger);
+            }
+
+        .tl-week {
+            font-size: 11px;
+            color: var(--ink3);
+            margin-bottom: 2px;
+        }
+
+        .tl-status {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .tl-remark {
+            font-size: 12px;
+            color: var(--ink2);
+            line-height: 1.5;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--ink);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 9999;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all .3s;
+            max-width: 320px;
+        }
+
+            .toast.show {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .toast.success {
+                background: #15803d;
+            }
+
+            .toast.error {
+                background: #b91c1c;
+            }
+
+        .alert-sm {
+            padding: 10px 14px;
+            border-radius: 9px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+            .alert-sm.success {
+                background: #f0fdf4;
+                border: 1px solid #bbf7d0;
+                color: var(--success);
+            }
+
+            .alert-sm.error {
+                background: #fef2f2;
+                border: 1px solid #fecaca;
+                color: var(--danger);
+            }
+
+            .alert-sm.show {
+                display: block;
+            }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sb-brand">
+            <div class="sb-brand-icon">🎓</div>
+            <span class="sb-brand-name">CampusVoice</span>
+        </div>
+        <div class="sb-nav">
+            <div class="sb-section-label">Overview</div>
+            <button class="sb-item active" onclick="showSection('dashboard',this)"><span class="si">📊</span>Dashboard</button>
+            <div class="sb-section-label">Complaints</div>
+            <button class="sb-item" onclick="showSection('file',this)"><span class="si">✏️</span>File a complaint</button>
+            <button class="sb-item" onclick="showSection('mycomplaints',this)"><span class="si">📋</span>My complaints</button>
+            <div class="sb-section-label">Account</div>
+            <button class="sb-item" onclick="showSection('password',this)"><span class="si">🔑</span>Change password</button>
+        </div>
+        <div class="sb-footer">
+            <div class="sb-user">
+                <div class="sb-avatar" id="avatarLetter">S</div>
+                <span class="sb-uname" id="sidebarName">Student</span>
+                <span class="sb-logout" onclick="logout()">→</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main">
+        <div class="topbar">
+            <div>
+                <div class="topbar-title" id="topTitle">Dashboard</div>
+                <div class="topbar-sub" id="topSub">Welcome back!</div>
+            </div>
+        </div>
+        <div class="content">
+
+            <!-- DASHBOARD -->
+            <div class="section active" id="dashboard">
+                <div class="stats-row">
+                    <div class="stat-card"><div class="sc-label">Total filed</div><div class="sc-num blue" id="stTotal">—</div></div>
+                    <div class="stat-card"><div class="sc-label">Open</div><div class="sc-num amber" id="stOpen">—</div></div>
+                    <div class="stat-card"><div class="sc-label">In progress</div><div class="sc-num blue" id="stProg">—</div></div>
+                    <div class="stat-card"><div class="sc-label">Resolved</div><div class="sc-num green" id="stRes">—</div></div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📌 Recent complaints</div>
+                    <div id="recentList"><div class="empty-state"><div class="es-ico">📭</div><p>No complaints yet.</p></div></div>
+                </div>
+            </div>
+
+            <!-- FILE COMPLAINT -->
+            <div class="section" id="file">
+                <div class="card">
+                    <div class="card-title">✏️ File a new complaint</div>
+                    <div class="alert-sm success" id="fileOk">✅ Complaint submitted successfully!</div>
+                    <div class="alert-sm error" id="fileErr"></div>
+                    <div class="field-group"><label>Complaint title</label><input type="text" id="title" placeholder="Short, clear description of the issue"></div>
+                    <div class="field-group"><label>Detailed description</label><textarea id="desc" placeholder="Explain what happened, where, and when..."></textarea></div>
+                    <div class="row-2">
+                        <div class="field-group">
+                            <label>Category</label>
+                            <select id="category">
+                                <option value="Canteen">🍽️ Canteen / Food</option>
+                                <option value="Hostel">🏠 Hostel</option>
+                                <option value="Academic">📚 Academic</option>
+                                <option value="Infrastructure">🏗️ Infrastructure</option>
+                                <option value="Library">📖 Library</option>
+                                <option value="Harassment">⚠️ Harassment</option>
+                                <option value="Transport">🚌 Transport</option>
+                                <option value="Administration">📄 Administration</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Priority</label>
+                            <select id="priority">
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field-group"><label>Department</label><select id="dept_id"></select></div>
+                    <div class="field-group">
+                        <label>Upload proof (optional)</label>
+                        <div class="upload-zone" onclick="document.getElementById('proofFiles').click()">
+                            <div class="uz-ico">📎</div>
+                            <p><strong>Click to upload</strong> images or videos</p>
+                            <p style="margin-top:4px;font-size:11px">JPG, PNG, MP4 supported</p>
+                            <input type="file" id="proofFiles" multiple accept="image/*,video/*" style="display:none" onchange="showFiles(this)">
+                        </div>
+                        <div class="file-chips" id="fileChips"></div>
+                    </div>
+                    <button class="btn-submit" onclick="fileComplaint()">Submit complaint</button>
+                </div>
+            </div>
+
+            <!-- MY COMPLAINTS -->
+            <div class="section" id="mycomplaints">
+                <div class="card">
+                    <div class="card-title">📋 My complaints</div>
+                    <div class="toolbar">
+                        <input type="text" class="search-input" id="searchInput" placeholder="Search complaints..." oninput="filterList()">
+                        <select class="filter-sel" id="filterStatus" onchange="filterList()">
+                            <option value="">All statuses</option>
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                        <select class="filter-sel" id="filterCat" onchange="filterList()">
+                            <option value="">All categories</option>
+                            <option value="Canteen">Canteen</option>
+                            <option value="Hostel">Hostel</option>
+                            <option value="Academic">Academic</option>
+                            <option value="Infrastructure">Infrastructure</option>
+                            <option value="Library">Library</option>
+                            <option value="Harassment">Harassment</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Administration">Administration</option>
+                        </select>
+                    </div>
+                    <div id="myList"><div class="empty-state"><div class="es-ico">⏳</div><p>Loading...</p></div></div>
+                </div>
+            </div>
+
+            <!-- CHANGE PASSWORD -->
+            <div class="section" id="password">
+                <div class="card" style="max-width:480px">
+                    <div class="card-title">🔑 Change password</div>
+                    <div class="alert-sm success" id="pwOk">✅ Password changed successfully!</div>
+                    <div class="alert-sm error" id="pwErr"></div>
+                    <div class="field-group"><label>Current password</label><input type="password" id="oldPw" placeholder="Enter current password"></div>
+                    <div class="field-group"><label>New password</label><input type="password" id="newPw" placeholder="Minimum 8 characters"></div>
+                    <div class="field-group"><label>Confirm new password</label><input type="password" id="confPw" placeholder="Re-enter new password"></div>
+                    <button class="btn-submit" onclick="changePassword()">Update password</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-bg" id="modalBg">
+        <div class="modal">
+            <div class="modal-head">
+                <h3 id="modalTitle">Complaint details</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const API = 'http://127.0.0.1:8000';
+        const token = localStorage.getItem('token');
+        const uname = localStorage.getItem('name');
+        if (!token) window.location.href = 'login.html';
+        document.getElementById('sidebarName').textContent = uname || 'Student';
+        document.getElementById('avatarLetter').textContent = (uname || 'S')[0].toUpperCase();
+
+        let allComplaints = [];
+        const catIcons = { Canteen: '🍽️', Hostel: '🏠', Academic: '📚', Infrastructure: '🏗️', Library: '📖', Harassment: '⚠️', Transport: '🚌', Administration: '📄' };
+
+        function toast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.className = 'toast ' + type; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function showSection(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
+            const titles = { dashboard: 'Dashboard', file: 'File a complaint', mycomplaints: 'My complaints', password: 'Change password' };
+            document.getElementById('topTitle').textContent = titles[id] || id;
+            if (id === 'mycomplaints') loadMyComplaints();
+            if (id === 'dashboard') loadDashboard();
+        }
+
+        function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+
+        async function loadDepts() {
+            const r = await fetch(API + '/departments');
+            const d = await r.json();
+            const s = document.getElementById('dept_id');
+            d.forEach(x => s.innerHTML += `<option value="${x.department_id}">${x.dept_name}</option>`);
+        }
+
+        async function loadDashboard() {
+            try {
+                const r = await fetch(API + '/complaints', { headers: { Authorization: 'Bearer ' + token } });
+                const d = await r.json();
+                document.getElementById('stTotal').textContent = d.length;
+                document.getElementById('stOpen').textContent = d.filter(c => c.current_status === 'Open').length;
+                document.getElementById('stProg').textContent = d.filter(c => c.current_status === 'In Progress').length;
+                document.getElementById('stRes').textContent = d.filter(c => c.current_status === 'Resolved').length;
+                const div = document.getElementById('recentList');
+                if (!d.length) { div.innerHTML = '<div class="empty-state"><div class="es-ico">📭</div><p>No complaints filed yet.</p></div>'; return; }
+                div.innerHTML = d.slice(0, 5).map(c => rowHTML(c)).join('');
+            } catch (e) { }
+        }
+
+        function rowHTML(c) {
+            const icon = catIcons[c.category] || '📦';
+            return `<div class="complaint-row" onclick="openModal(${c.complaint_id})">
+        <div class="cr-icon ${c.category}">${icon}</div>
+        <div class="cr-body">
+          <div class="cr-title">${c.title}</div>
+          <div class="cr-desc">${c.description}</div>
+          <div class="cr-meta">
+            <span class="badge ${c.current_status.replace(' ', '-')}">${c.current_status}</span>
+            <span class="badge ${c.priority}">${c.priority}</span>
+            <span class="badge cat">${c.category}</span>
+            <span class="cr-date">${new Date(c.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+          </div>
+        </div>
+      </div>`;
+        }
+
+        async function loadMyComplaints() {
+            try {
+                const r = await fetch(API + '/complaints', { headers: { Authorization: 'Bearer ' + token } });
+                allComplaints = await r.json();
+                renderList(allComplaints);
+            } catch (e) { document.getElementById('myList').innerHTML = '<p style="color:var(--danger);font-size:13px">Failed to load.</p>'; }
+        }
+
+        function renderList(d) {
+            const div = document.getElementById('myList');
+            if (!d.length) { div.innerHTML = '<div class="empty-state"><div class="es-ico">📭</div><p>No complaints found.</p></div>'; return; }
+            div.innerHTML = d.map(c => rowHTML(c)).join('');
+        }
+
+        function filterList() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const st = document.getElementById('filterStatus').value;
+            const ct = document.getElementById('filterCat').value;
+            let f = allComplaints;
+            if (q) f = f.filter(c => c.title.toLowerCase().includes(q) || c.description.toLowerCase().includes(q));
+            if (st) f = f.filter(c => c.current_status === st);
+            if (ct) f = f.filter(c => c.category === ct);
+            renderList(f);
+        }
+
+        function showFiles(input) {
+            document.getElementById('fileChips').innerHTML = Array.from(input.files).map(f => `<span class="file-chip">📎 ${f.name}</span>`).join('');
+        }
+
+        async function fileComplaint() {
+            const ok = document.getElementById('fileOk');
+            const err = document.getElementById('fileErr');
+            ok.classList.remove('show'); err.classList.remove('show');
+            const form = new FormData();
+            form.append('title', document.getElementById('title').value);
+            form.append('description', document.getElementById('desc').value);
+            form.append('category', document.getElementById('category').value);
+            form.append('priority', document.getElementById('priority').value);
+            form.append('dept_id', document.getElementById('dept_id').value);
+            Array.from(document.getElementById('proofFiles').files).forEach(f => form.append('files', f));
+            try {
+                const r = await fetch(API + '/complaints', { method: 'POST', headers: { Authorization: 'Bearer ' + token }, body: form });
+                const d = await r.json();
+                if (!r.ok) { err.textContent = '⚠️ ' + (d.detail || 'Failed.'); err.classList.add('show'); return; }
+                ok.classList.add('show');
+                document.getElementById('title').value = '';
+                document.getElementById('desc').value = '';
+                document.getElementById('fileChips').innerHTML = '';
+                toast('Complaint submitted!', 'success');
+                loadDashboard();
+            } catch { err.textContent = '⚠️ Cannot connect to server.'; err.classList.add('show'); }
+        }
+
+        async function openModal(id) {
+            document.getElementById('modalBg').classList.add('open');
+            document.getElementById('modalBody').innerHTML = '<p style="color:var(--ink3);text-align:center;padding:20px;font-size:13px">Loading...</p>';
+            try {
+                const [cr, sr] = await Promise.all([
+                    fetch(API + `/complaints/${id}`, { headers: { Authorization: 'Bearer ' + token } }),
+                    fetch(API + `/complaints/${id}/status`, { headers: { Authorization: 'Bearer ' + token } })
+                ]);
+                const c = await cr.json(); const statuses = await sr.json();
+                document.getElementById('modalTitle').textContent = c.title;
+                const tl = statuses.length ? `<div class="timeline">` + statuses.map(s => `
+          <div class="tl-item">
+            <div class="tl-dot ${s.status_label}"></div>
+            <div class="tl-content">
+              <div class="tl-week">Week ${s.week_number} · ${new Date(s.updated_at).toLocaleDateString()}</div>
+              <div class="tl-status">${s.status_label}</div>
+              <div class="tl-remark">${s.remarks || ''}</div>
+            </div>
+          </div>`).join('') + `</div>` : '<p style="font-size:13px;color:var(--ink3)">No updates yet.</p>';
+                document.getElementById('modalBody').innerHTML = `
+          <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:12px">${c.description}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+            <span class="badge ${c.current_status.replace(' ', '-')}">${c.current_status}</span>
+            <span class="badge ${c.priority}">${c.priority}</span>
+            <span class="badge cat">${c.category}</span>
+          </div>
+          <div style="font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Status timeline</div>
+          ${tl}`;
+            } catch { document.getElementById('modalBody').innerHTML = '<p style="color:var(--danger);font-size:13px">Failed to load.</p>'; }
+        }
+
+        function closeModal() { document.getElementById('modalBg').classList.remove('open'); }
+        document.getElementById('modalBg').addEventListener('click', e => { if (e.target === document.getElementById('modalBg')) closeModal(); });
+
+        async function changePassword() {
+            const ok = document.getElementById('pwOk');
+            const err = document.getElementById('pwErr');
+            ok.classList.remove('show'); err.classList.remove('show');
+            const oldPw = document.getElementById('oldPw').value;
+            const newPw = document.getElementById('newPw').value;
+            const confPw = document.getElementById('confPw').value;
+            if (!oldPw || !newPw || !confPw) { err.textContent = '⚠️ Please fill in all fields.'; err.classList.add('show'); return; }
+            if (newPw.length < 8) { err.textContent = '⚠️ New password must be at least 8 characters.'; err.classList.add('show'); return; }
+            if (newPw !== confPw) { err.textContent = '⚠️ Passwords do not match.'; err.classList.add('show'); return; }
+            try {
+                const r = await fetch(`${API}/change-password?old_password=${encodeURIComponent(oldPw)}&new_password=${encodeURIComponent(newPw)}`, { method: 'PUT', headers: { Authorization: 'Bearer ' + token } });
+                const d = await r.json();
+                if (!r.ok) { err.textContent = '⚠️ ' + (d.detail || 'Failed.'); err.classList.add('show'); return; }
+                ok.classList.add('show');
+                document.getElementById('oldPw').value = '';
+                document.getElementById('newPw').value = '';
+                document.getElementById('confPw').value = '';
+                toast('Password updated!', 'success');
+            } catch { err.textContent = '⚠️ Cannot connect.'; err.classList.add('show'); }
+        }
+
+        loadDepts(); loadDashboard();
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>College Complaint System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .logo h1 {
+                color: #0f3460;
+                font-size: 24px;
+                font-weight: 700;
+            }
+
+            .logo p {
+                color: #888;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+
+        .tabs {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 25px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #888;
+            transition: all 0.3s;
+        }
+
+            .tab.active {
+                background: #0f3460;
+                color: white;
+            }
+
+        .form-section {
+            display: none;
+        }
+
+            .form-section.active {
+                display: block;
+            }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 1

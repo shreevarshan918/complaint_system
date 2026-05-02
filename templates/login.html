@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>CampusVoice — Sign In</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ink: #0f1117;
+            --ink2: #4a5166;
+            --ink3: #8b91a6;
+            --surface: #ffffff;
+            --bg: #f4f5f9;
+            --accent: #2563eb;
+            --accent-dark: #1d4ed8;
+            --border: #e2e5ed;
+            --radius: 12px;
+            --danger: #dc2626;
+            --success: #16a34a;
+        }
+
+        body {
+            font-family: 'DM Sans',sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .left-panel {
+            background: linear-gradient(160deg,#0f1f5c 0%,#1e3a8a 40%,#1d4ed8 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 48px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .left-panel::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+
+        .left-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .left-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .left-logo-name {
+            font-family: 'DM Serif Display',serif;
+            font-size: 22px;
+            letter-spacing: -0.3px;
+        }
+
+        .left-hero {
+            position: relative;
+        }
+
+            .left-hero h2 {
+                font-family: 'DM Serif Display',serif;
+                font-size: 42px;
+                line-height: 1.15;
+                margin-bottom: 16px;
+                letter-spacing: -0.5px;
+            }
+
+            .left-hero p {
+                font-size: 16px;
+                opacity: 0.7;
+                line-height: 1.6;
+                max-width: 380px;
+            }
+
+        .left-stats {
+            display: flex;
+            gap: 32px;
+            position: relative;
+        }
+
+        .stat-item .num {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-item .lbl {
+            font-size: 13px;
+            opacity: 0.6;
+            margin-top: 2px;
+        }
+
+        .right-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 420px;
+        }
+
+            .login-box h1 {
+                font-family: 'DM Serif Display',serif;
+                font-size: 30px;
+                color: var(--ink);
+                margin-bottom: 8px;
+                letter-spacing: -0.3px;
+            }
+
+            .login-box .sub {
+                font-size: 15px;
+                color: var(--ink2);
+                margin-bottom: 36px;
+            }
+
+        .role-toggle {
+            display: flex;
+            background: var(--bg);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 28px;
+            gap: 4px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 9px;
+            text-align: center;
+            border-radius: 7px;
+            border: none;
+            background: none;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink3);
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'DM Sans',sans-serif;
+        }
+
+            .role-btn.active {
+                background: #fff;
+                color: var(--accent);
+                box-shadow: 0 1px 4px rgba(0,0,0,.1);
+            }
+
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+            .field-group label {
+                display: block;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--ink2);
+                margin-bottom: 6px;
+                text-transform: uppercase;
+                letter-spacing: .5px;
+            }
+
+            .field-group input {
+                width: 100%;
+                padding: 12px 14px;
+                border: 1.5px solid var(--border);
+                border-radius: var(--radius);
+                font-size: 14px;
+                color: var(--ink);
+                font-family: 'DM Sans',sans-serif;
+                outline: none;
+                transition: border-color .2s;
+                background: #fff;
+            }
+
+                .field-group input:focus {
+                    border-color: var(--accent);
+                }
+
+                .field-group input::placeholder {
+                    color: var(--ink3);
+                }
+
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'DM Sans',sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+            .btn-primary:hover {
+                background: var(--accent-dark);
+            }
+
+            .btn-primary:active {
+                transform: scale(.99);
+            }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .6s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert-box {
+            padding: 12px 14px;
+            border-radius: 9px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+            .alert-box.error {
+                background: #fef2f2;
+                border: 1px solid #fecaca;
+                color: var(--danger);
+            }
+
+            .alert-box.show {
+                display: block;
+            }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+            .divider hr {
+                flex: 1;
+                border: none;
+                border-top: 1px solid var(--border);
+            }
+
+            .divider span {
+                font-size: 12px;
+                color: var(--ink3);
+            }
+
+        .register-link {
+            text-align: center;
+            font-size: 14px;
+            color: var(--ink2);
+        }
+
+            .register-link a {
+                color: var(--accent);
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+                .register-link a:hover {
+                    text-decoration: underline;
+                }
+
+        @media(max-width:768px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+
+            .left-panel {
+                display: none;
+            }
+
+            .right-panel {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="left-panel">
+        <div class="left-logo">
+            <div class="left-logo-icon">🎓</div>
+            <span class="left-logo-name">CampusVoice</span>
+        </div>
+        <div class="left-hero">
+            <h2>Your voice matters.<br>We make it heard.</h2>
+            <p>A transparent, accountable complaint management system built for modern colleges and universities.</p>
+        </div>
+        <div class="left-stats">
+            <div class="stat-item"><div class="num">6</div><div class="lbl">Entity tables</div></div>
+            <div class="stat-item"><div class="num">3NF</div><div class="lbl">Database design</div></div>
+            <div class="stat-item"><div class="num">3</div><div class="lbl">User roles</div></div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="login-box">
+            <h1>Welcome back</h1>
+            <p class="sub">Sign in to your CampusVoice account</p>
+
+            <div class="role-toggle">
+                <button class="role-btn active" onclick="setRole('student',this)">Student</button>
+                <button class="role-btn" onclick="setRole('staff',this)">Staff</button>
+                <button class="role-btn" onclick="setRole('staff',this)" style="display:none" id="adminBtn">Admin</button>
+            </div>
+
+            <div class="alert-box error" id="errBox"></div>
+
+            <div class="field-group">
+                <label>Email address</label>
+                <input type="email" id="email" placeholder="you@college.edu" autocomplete="email">
+            </div>
+            <div class="field-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+            </div>
+
+            <input type="hidden" id="role" value="student">
+
+            <button class="btn-primary" onclick="login()" id="loginBtn">
+                <span id="loginText">Sign in</span>
+                <div class="spinner" id="spin"></div>
+            </button>
+
+            <div class="divider"><hr><span>New to CampusVoice?</span><hr></div>
+            <div class="register-link"><a href="register.html">Create a student account →</a></div>
+        </div>
+    </div>
+
+    <script>
+        function setRole(role, el) {
+            document.getElementById('role').value = role;
+            document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+        async function login() {
+            const email = document.getElementById('email').value.trim();
+            const pw = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const err = document.getElementById('errBox');
+            const spin = document.getElementById('spin');
+            const txt = document.getElementById('loginText');
+            const btn = document.getElementById('loginBtn');
+            err.classList.remove('show');
+            if (!email || !pw) { err.textContent = 'Please fill in all fields.'; err.classList.add('show'); return; }
+            btn.disabled = true; txt.style.display = 'none'; spin.style.display = 'block';
+            try {
+                const res = await fetch('http://127.0.0.1:8000/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pw, role }) });
+                const data = await res.json();
+                if (!res.ok) { err.textContent = data.detail || 'Invalid credentials.'; err.classList.add('show'); return; }
+                localStorage.setItem('token', data.access_token);
+                localStorage.setItem('role', data.role);
+                localStorage.setItem('name', data.name);
+                window.location.href = data.role === 'student' ? 'student.html' : 'admin.html';
+            } catch { err.textContent = 'Cannot connect to server. Is it running?'; err.classList.add('show'); }
+            finally { btn.disabled = false; txt.style.display = 'inline'; spin.style.display = 'none'; }
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+    </script>
+</body>
+</html>
